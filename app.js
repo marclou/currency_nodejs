@@ -23,17 +23,31 @@ const getCountries = (currency) => {
         .catch((e) => console.log(e));
 };
 
-const convertAndAnalyseCurrency = (from, to, amount) => {
-    return getCountries(to)
-        .then((countries) => {
+// ES6 PROMISES
+// const convertAndAnalyseCurrency = (from, to, amount) => {
+//     return getCountries(to)
+//         .then((countries) => {
+//
+//             return getExchangeRate(from, to)
+//                 .then((exchangeCurrency) => {
+//                     const exchangeAmount = exchangeCurrency * amount;
+//
+//                     return `${amount} ${from} is worth ${exchangeAmount} ${to}. ${to} is available in ${countries.join(', ')}`;
+//                 });
+//         });
+// };
 
-            return getExchangeRate(from, to)
-                .then((exchangeCurrency) => {
-                    const exchangeAmount = exchangeCurrency * amount;
+//ES7 ASYNC AWAIT
+const convertAndAnalyseCurrency = async (from, to, amount) => {
+    const countries = await getCountries(to);
+    const exchangeCurrency = await getExchangeRate(from, to);
+    const exchangeAmount = exchangeCurrency * amount;
 
-                    return `${amount} ${from} is worth ${exchangeAmount} ${to}. ${to} is available in ${countries.join(', ')}`;
-                });
-        });
+    return `${amount} ${from} is worth ${exchangeAmount} ${to}. ${to} is available in ${countries.join(', ')}`;
 };
+
+
+
+
 
 convertAndAnalyseCurrency('EUR', 'CAD', 100).then((res) => console.log(res));
